@@ -8,9 +8,12 @@ from Control_Toolkit.Controllers import template_controller
 
 from Control_Toolkit.Cost_Functions import cost_function_base
 
+from utilities.path_helper_ros import *
+
+gym_path = get_gym_path()
 # cost_function config
 cost_function_config = yaml.load(
-    open(os.path.join("Control_Toolkit_ASF", "config_cost_function.yml"), "r"),
+    open(os.path.join(gym_path, "Control_Toolkit_ASF", "config_cost_function.yml"), "r"),
     Loader=yaml.FullLoader,
 )
 

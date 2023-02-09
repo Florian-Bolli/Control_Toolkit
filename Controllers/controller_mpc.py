@@ -12,10 +12,12 @@ from SI_Toolkit.computation_library import TensorType
 from Control_Toolkit.others.globals_and_utils import get_logger, import_optimizer_by_name
 
 from torch import inference_mode
+from utilities.path_helper_ros import *
+gym_path = get_gym_path()
 
 
-config_optimizers = yaml.load(open(os.path.join("Control_Toolkit_ASF", "config_optimizers.yml")), Loader=yaml.FullLoader)
-config_cost_function = yaml.load(open(os.path.join("Control_Toolkit_ASF", "config_cost_function.yml")), Loader=yaml.FullLoader)
+config_optimizers = yaml.load(open(os.path.join(gym_path, "Control_Toolkit_ASF", "config_optimizers.yml")), Loader=yaml.FullLoader)
+config_cost_function = yaml.load(open(os.path.join(gym_path, "Control_Toolkit_ASF", "config_cost_function.yml")), Loader=yaml.FullLoader)
 logger = get_logger(__name__)
 
 

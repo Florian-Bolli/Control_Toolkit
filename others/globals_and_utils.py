@@ -3,6 +3,7 @@ import logging
 import os
 from datetime import datetime
 from importlib import import_module
+from utilities.path_helper_ros import *
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "0"  # all TF messages
 
@@ -95,6 +96,8 @@ def find_optimizer_if_it_exists(optimizer_name: str) -> str:
         glob.glob(f"{os.path.join('Control_Toolkit_ASF', 'Optimizers', optimizer_full_name)}.py")
         + glob.glob(f"{os.path.join('**', 'Control_Toolkit', 'Optimizers', optimizer_full_name)}.py", recursive=True)
     )
+    optimizer_relative_paths = ["Control_Toolkit/Optimizers/optimizer_mppi.py"]
+    # [Control_Toolkit/Optimizers/optimizer_mppi.py]
     if len(optimizer_relative_paths) > 1:
         raise ValueError(f"Optimizer {optimizer_full_name} must be in a unique location. {len(optimizer_relative_paths)} found.")
     elif len(optimizer_relative_paths) == 1:
@@ -106,7 +109,13 @@ def find_optimizer_if_it_exists(optimizer_name: str) -> str:
 def import_optimizer_by_name(optimizer_name: str) -> type:
     optimizer_full_name, optimizer_relative_path = find_optimizer_if_it_exists(optimizer_name)
     
-    if optimizer_full_name:
+    if optimizer_full_name: #optimizer_mppi
+        
+        gym_path = get_gym_path()
+        import sys
+        sys.path.insert(0, gym_path)
+        
+        
         Optimizer = getattr(import_module(optimizer_relative_path.replace(".py", "").replace(os.sep, ".")), optimizer_full_name)
         return Optimizer
     else:

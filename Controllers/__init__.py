@@ -8,8 +8,11 @@ from Control_Toolkit.others.globals_and_utils import get_logger
 from SI_Toolkit.computation_library import (ComputationLibrary, NumpyLibrary,
                                             PyTorchLibrary, TensorFlowLibrary,
                                             TensorType)
+from utilities.path_helper_ros import *
 
-config_cost_function = yaml.load(open(os.path.join("Control_Toolkit_ASF", "config_cost_function.yml")), Loader=yaml.FullLoader)
+
+gym_path = get_gym_path()
+config_cost_function = yaml.load(open(os.path.join(gym_path,"Control_Toolkit_ASF", "config_cost_function.yml")), Loader=yaml.FullLoader)
 logger = get_logger(__name__)
 
 """
@@ -38,8 +41,10 @@ class template_controller(ABC):
         initial_environment_attributes: "dict[str, TensorType]",
     ):
         # Load controller config and select the entry for the current controller
+        gym_path = get_gym_path()
+
         config_controllers = yaml.load(
-            open(os.path.join("Control_Toolkit_ASF", "config_controllers.yml")),
+            open(os.path.join(gym_path, "Control_Toolkit_ASF", "config_controllers.yml")),
             Loader=yaml.FullLoader
         )
         # self.controller_name is inferred from the class name, which is the class being instantiated
