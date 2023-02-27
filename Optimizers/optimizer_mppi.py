@@ -198,13 +198,25 @@ class optimizer_mppi(template_optimizer):
             self.logging_values["rollout_trajectories_logged"] = self.lib.to_numpy(self.rollout_trajectories)
             self.logging_values["u_logged"] = self.u
 
-        if False:
+        if True:
             self.optimal_trajectory = self.lib.to_numpy(self.predict_optimal_trajectory(s, self.u_nom))
 
         return self.u
 
+    # def optimizer_reset(self):
+    #     self.u_nom = (
+    #         0.5 * self.lib.to_tensor(self.action_low + self.action_high, self.lib.float32)
+    #         * self.lib.ones([1, self.mpc_horizon, self.num_control_inputs])
+    #     )
+    # Fixed speed
     def optimizer_reset(self):
-        self.u_nom = (
-            0.5 * self.lib.to_tensor(self.action_low + self.action_high, self.lib.float32)
-            * self.lib.ones([1, self.mpc_horizon, self.num_control_inputs])
+        u_nom_steering = (
+            0.5 * self.lib.to_tensor(-1.06 +1.06, self.lib.float32)
+            * self.lib.ones([1, self.mpc_horizon, 1])
         )
+        u_nom_accl = (
+            2.8 * self.lib.ones([1, self.mpc_horizon, 1])
+        )
+        
+        self.u_nom = self.lib.stack([u_nom_steering,u_nom_accl], axis=2)[:,:,:,0]
+

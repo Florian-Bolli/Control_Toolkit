@@ -97,6 +97,7 @@ def find_optimizer_if_it_exists(optimizer_name: str) -> str:
         + glob.glob(f"{os.path.join('**', 'Control_Toolkit', 'Optimizers', optimizer_full_name)}.py", recursive=True)
     )
     optimizer_relative_paths = ["Control_Toolkit/Optimizers/optimizer_mppi.py"]
+    # optimizer_relative_paths = ["Control_Toolkit/Optimizers/optimizer_rpgd_tf.py"]
     # [Control_Toolkit/Optimizers/optimizer_mppi.py]
     if len(optimizer_relative_paths) > 1:
         raise ValueError(f"Optimizer {optimizer_full_name} must be in a unique location. {len(optimizer_relative_paths)} found.")
